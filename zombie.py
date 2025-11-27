@@ -164,22 +164,20 @@ class Zombie:
 
 
     def build_behavior_tree(self):
-        # 여기를 채우시오.
-        a1 = Action("목적지 설정", self.set_target_location, 500, 500)
         a2 = Action("목적지로 이동", self.move_to)
-        root = move_to_target_location = Sequence("지정된 목적지로 이동", a1, a2)
-
         a3 = Action("랜덤 위치 설정", self.set_random_location)
-        root = wander = Sequence('Wander', a3, a2)
+        #root = wander = Sequence('Wander', a3, a2)
 
         c1 = Condition('소년이 근처에 있는가?', self.if_boy_nearby, 7)
         c2 = Condition('좀비가 소년보다 공이 많은가?', self.compare_ball)
         a4 = Action('소년한테 접근', self.move_to_boy)
         a5 = Action('소년에게서 도망', self.runaway_from_boy)
 
-
-
-        root = chase_or_flee = Selector('추적 또는 배회', chase_boy, wander)
+        root = chase_boy = Selector('추적 혹은 도망, 배회',
+            Sequence('추적', c1, c2, a4),
+            Sequence('도망', c1, a5),
+            Sequence('배회', a3, a2)
+        )
 
         self.bt = BehaviorTree(root)
 
