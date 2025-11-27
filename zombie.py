@@ -43,7 +43,7 @@ class Zombie:
         self.speed = 0.0
         self.frame = random.randint(0, 9)
         self.state = 'Idle'
-        self.ball_count = 0
+        self.ball_count = 10
 
 
         self.tx, self.ty = 1000, 1000
@@ -165,8 +165,11 @@ class Zombie:
         root = wander = Sequence('Wander', a3, a2)
 
         c1 = Condition('소년이 근처에 있는가?', self.if_boy_nearby, 7)
+        c2 = Condition('좀비가 소년보다 공이 많은가?', self.compare_ball)
         a4 = Action('소년한테 접근', self.move_to_boy)
-        root = chase_boy = Sequence('소년 추적', c1, a4)
+
+        root = chase_boy = Sequence('공이 더 많으면 소년 추적', c2, c1, a4)
+        # root = chase_boy = Sequence('소년 추적', c1, a4)
 
         root = chase_or_flee = Selector('추적 또는 배회', chase_boy, wander)
 
