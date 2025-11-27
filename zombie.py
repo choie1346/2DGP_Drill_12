@@ -141,6 +141,12 @@ class Zombie:
         else:
             return BehaviorTree.RUNNING
 
+    def compare_ball(self):
+        if self.ball_count >= common.boy.ball_count:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
 
     def get_patrol_location(self):
         # 여기를 채우시오.
